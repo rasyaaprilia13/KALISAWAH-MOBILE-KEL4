@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../profile/profile_screen.dart';
-import '../profile/laporan_keuangan_screen.dart';
+import '../keuangan/laporan_keuangan_screen.dart';
+import '../historibook/histori_booking_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -423,6 +424,14 @@ class DashboardScreen extends StatelessWidget {
                 icon: Icons.list_alt_outlined,
                 title: 'Histori Booking',
                 subtitle: 'Lihat semua riwayat pemesanan',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HistoriBookingScreen(),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 30),

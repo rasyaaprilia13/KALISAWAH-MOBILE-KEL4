@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'profile_edit.dart';
-import 'laporan_keuangan_screen.dart';
+import '../keuangan/laporan_keuangan_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

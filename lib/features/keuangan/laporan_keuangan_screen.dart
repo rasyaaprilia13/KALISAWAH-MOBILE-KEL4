@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'pemasukan_screen.dart';
+import 'pengeluaran_screen.dart';
 
 class LaporanKeuanganScreen extends StatelessWidget {
   const LaporanKeuanganScreen({super.key});
@@ -50,11 +52,25 @@ class LaporanKeuanganScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: _buildFilterButton('Pemasukan', onTap: () {}),
+                    child: _buildFilterButton('Pemasukan', onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PemasukanScreen(),
+                        ),
+                      );
+                    }),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: _buildFilterButton('Pengeluaran', onTap: () {}),
+                    child: _buildFilterButton('Pengeluaran', onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PengeluaranScreen(),
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),
