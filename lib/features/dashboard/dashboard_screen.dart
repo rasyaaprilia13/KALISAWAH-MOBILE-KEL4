@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../profile/profile_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -203,19 +204,29 @@ class DashboardScreen extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
 
-                  const Row(
+                  Row(
                     children: [
 
-                      Icon(
+                      const Icon(
                         Icons.notifications_none_outlined,
                         size: 22,
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
-                      Icon(
-                        Icons.person_outline,
-                        size: 22,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.person_outline,
+                          size: 22,
+                        ),
                       ),
                     ],
                   )
