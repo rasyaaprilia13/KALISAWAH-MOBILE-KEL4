@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'histori_booking_harian_screen.dart';
+import 'widgets/export_report_modal.dart';
 
 class HistoriBookingBulananScreen extends StatefulWidget {
   const HistoriBookingBulananScreen({super.key});
@@ -286,26 +287,40 @@ class _HistoriBookingBulananScreenState extends State<HistoriBookingBulananScree
                         color: Colors.black87,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
-                            blurRadius: 2,
-                            offset: const Offset(0, 1),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => ExportReportModal(
+                            activeFilter: _activeStatus,
+                            isHarian: false,
+                            periodText: 'Mei 2026',
                           ),
-                        ],
-                      ),
-                      child: const Text(
-                        'Ekspor PDF/Excel',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: const Color(0xFFEEEEEE)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.02),
+                              blurRadius: 2,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          'Ekspor PDF/Excel',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ),
