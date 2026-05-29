@@ -54,10 +54,9 @@ class PengeluaranService {
     final result = jsonDecode(response.body);
     final url = result['file_url'];
 
-    // minta izin storage
     await Permission.storage.request();
 
-    // folder Download HP (Android)
+   
     final dir = Directory('/storage/emulated/0/Download');
 
     if (!await dir.exists()) {
