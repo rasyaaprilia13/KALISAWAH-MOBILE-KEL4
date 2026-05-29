@@ -6,6 +6,7 @@ import '../historibook/histori_booking_screen.dart';
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
+// halo
   Widget infoCard({
     required IconData icon,
     required String title,

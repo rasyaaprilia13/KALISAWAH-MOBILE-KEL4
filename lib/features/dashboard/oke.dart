@@ -1,2 +1,0 @@
-// assalamualaaikum
-// asik asik jos
