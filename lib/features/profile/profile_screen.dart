@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'profile_edit.dart';
+import '../keuangan/laporan_keuangan_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isMonitoringMenuOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -134,33 +142,63 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               // Menu Cards
-              _buildMenuCard(
-                title: 'Informasi Monitoring Usaha',
-                onTap: () {},
-              ),
-              
-              const SizedBox(height: 16),
-              
-              _buildMenuCard(
-                title: 'Informasi Akun',
-                onTap: () {},
-              ),
-              
-              const SizedBox(height: 16),
-              
-              _buildMenuCard(
-                title: 'Bantuan',
-                onTap: () {},
-              ),
-              
-              const SizedBox(height: 32),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Column(
+                    children: [
+                      _buildMenuCard(
+                        title: 'Informasi Monitoring Usaha',
+                        onTap: () {
+                          setState(() {
+                            _isMonitoringMenuOpen = !_isMonitoringMenuOpen;
+                          });
+                        },
+                        isRotated: _isMonitoringMenuOpen,
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      _buildMenuCard(
+                        title: 'Informasi Akun',
+                        onTap: () {},
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      _buildMenuCard(
+                        title: 'Bantuan',
+                        onTap: () {},
+                      ),
+                      
+                      const SizedBox(height: 32),
 
-              // Logout Card
-              _buildMenuCard(
-                title: 'Logout',
-                textColor: const Color(0xFFE57373), // Merah soft
-                showArrow: false,
-                onTap: () {},
+                      // Logout Card
+                      _buildMenuCard(
+                        title: 'Logout',
+                        textColor: const Color(0xFFE57373), // Merah soft
+                        showArrow: false,
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                  
+                  // Dropdown Menu
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOutCubic,
+                    top: _isMonitoringMenuOpen ? 72 : 50,
+                    right: 32,
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 250),
+                      opacity: _isMonitoringMenuOpen ? 1.0 : 0.0,
+                      child: IgnorePointer(
+                        ignoring: !_isMonitoringMenuOpen,
+                        child: _buildMonitoringDropdown(),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               
               const SizedBox(height: 40),
@@ -171,11 +209,86 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildMonitoringDropdown() {
+    return Container(
+      width: 170, // kecil dan compact
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDropdownItem('Keuangan'),
+              _buildDivider(),
+              _buildDropdownItem('Data pengunjung'),
+              _buildDivider(),
+              _buildDropdownItem('Inventaris'),
+              _buildDivider(),
+              _buildDropdownItem('Histori booking'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownItem(String text) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _isMonitoringMenuOpen = false;
+        });
+        if (text == 'Keuangan') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LaporanKeuanganScreen(),
+            ),
+          );
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Color(0xFF555555), // abu tua
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return const Divider(
+      height: 1,
+      thickness: 1,
+      color: Color(0xFFF0F0F0),
+    );
+  }
+
   Widget _buildMenuCard({
     required String title,
     required VoidCallback onTap,
     Color textColor = Colors.black87,
     bool showArrow = true,
+    bool isRotated = false,
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -209,10 +322,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 if (showArrow)
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Colors.black,
-                    size: 28,
+                  AnimatedRotation(
+                    turns: isRotated ? 0.25 : 0.0,
+                    duration: const Duration(milliseconds: 250),
+                    child: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.black,
+                      size: 28,
+                    ),
                   ),
               ],
             ),
