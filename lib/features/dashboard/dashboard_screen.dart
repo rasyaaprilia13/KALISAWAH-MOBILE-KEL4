@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../profile/profile_screen.dart';
+import '../keuangan/laporan_keuangan_screen.dart';
+import '../historibook/histori_booking_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -102,9 +105,12 @@ class DashboardScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required String subtitle,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(14),
 
       decoration: BoxDecoration(
@@ -172,9 +178,10 @@ class DashboardScreen extends StatelessWidget {
             Icons.arrow_forward_ios_rounded,
             size: 18,
           ),
-        ],
+       ],
       ),
-    );
+    ),
+  );
   }
 
   @override
@@ -203,19 +210,29 @@ class DashboardScreen extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
 
-                  const Row(
+                  Row(
                     children: [
 
-                      Icon(
+                      const Icon(
                         Icons.notifications_none_outlined,
                         size: 22,
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
-                      Icon(
-                        Icons.person_outline,
-                        size: 22,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.person_outline,
+                          size: 22,
+                        ),
                       ),
                     ],
                   )
@@ -381,6 +398,14 @@ class DashboardScreen extends StatelessWidget {
                 title: 'Laporan Keuangan',
                 subtitle:
                     'Lihat pemasukan, pengeluaran, dan riwayat transaksi',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LaporanKeuanganScreen(),
+                    ),
+                  );
+                },
               ),
 
               menuItem(
@@ -399,6 +424,14 @@ class DashboardScreen extends StatelessWidget {
                 icon: Icons.list_alt_outlined,
                 title: 'Histori Booking',
                 subtitle: 'Lihat semua riwayat pemesanan',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HistoriBookingScreen(),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 30),
