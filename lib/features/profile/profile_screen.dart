@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'profile_edit.dart';
 import '../keuangan/laporan_keuangan_screen.dart';
+import '../historibook/histori_booking_screen.dart';
+import '../inventaris/inventaris_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -256,6 +258,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => const LaporanKeuanganScreen(),
+            ),
+          );
+        } else if (text == 'Histori booking') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HistoriBookingScreen(),
+            ),
+          );
+        } else if (text == 'Inventaris') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InventarisScreen(),
             ),
           );
         }

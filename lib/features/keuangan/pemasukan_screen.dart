@@ -2,8 +2,59 @@ import 'package:flutter/material.dart';
 import 'detail_pemasukan_screen.dart';
 import 'pengeluaran_screen.dart';
 
-class PemasukanScreen extends StatelessWidget {
+class PemasukanScreen extends StatefulWidget {
   const PemasukanScreen({super.key});
+
+  @override
+  State<PemasukanScreen> createState() => _PemasukanScreenState();
+}
+
+class _PemasukanScreenState extends State<PemasukanScreen> {
+  DateTimeRange? selectedDateRange;
+
+  String _formatDate(DateTime date) {
+    final months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return "${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}";
+  }
+
+  String get _dateRangeText {
+    if (selectedDateRange == null) {
+      return '01 Mei 2026 - 23 Mei 2026';
+    }
+    return "${_formatDate(selectedDateRange!.start)} - ${_formatDate(selectedDateRange!.end)}";
+  }
+
+  Future<void> _selectDateRange(BuildContext context) async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2101),
+      initialDateRange: selectedDateRange ?? DateTimeRange(
+        start: DateTime(2026, 5, 1),
+        end: DateTime(2026, 5, 23),
+      ),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF64B5F6),
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDateRange) {
+      setState(() {
+        selectedDateRange = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,43 +160,44 @@ class PemasukanScreen extends StatelessWidget {
               const SizedBox(height: 24),
               
               // Card Filter Periode
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color(0xFFEEEEEE),
-                    width: 1,
+              GestureDetector(
+                onTap: () => _selectDateRange(context),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFEEEEEE),
+                      width: 1,
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.calendar_month_outlined, size: 20, color: Colors.grey),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Periode',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Text(
-                        '01 Mei 2026 - 23 Mei 2026',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_month_outlined, size: 20, color: Colors.grey),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Periode',
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
+                          fontSize: 12,
+                          color: Colors.grey,
                         ),
-                        textAlign: TextAlign.right,
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.keyboard_arrow_down, size: 20, color: Colors.grey),
-                  ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          _dateRangeText,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               

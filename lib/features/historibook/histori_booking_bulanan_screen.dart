@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'histori_booking_harian_screen.dart';
-import 'widgets/export_report_modal.dart';
+import 'exsport/export_report_modal.dart';
 
 class HistoriBookingBulananScreen extends StatefulWidget {
   const HistoriBookingBulananScreen({super.key});
@@ -10,6 +10,8 @@ class HistoriBookingBulananScreen extends StatefulWidget {
 }
 
 class _HistoriBookingBulananScreenState extends State<HistoriBookingBulananScreen> {
+  DateTime _selectedDate = DateTime(2026, 5, 1);
+  
   final List<String> _statusFilters = [
     'Semua',
     'Confirmed',
@@ -18,6 +20,26 @@ class _HistoriBookingBulananScreenState extends State<HistoriBookingBulananScree
     'Dibatalkan'
   ];
   String _activeStatus = 'Semua';
+
+  String _formatBulan(DateTime date) {
+    final months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return "${months[date.month - 1]} ${date.year}";
+  }
+
+  void _previousMonth() {
+    setState(() {
+      _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+    });
+  }
+
+  void _nextMonth() {
+    setState(() {
+      _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,33 +163,43 @@ class _HistoriBookingBulananScreenState extends State<HistoriBookingBulananScree
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
-                      ),
-                      child: const Icon(Icons.chevron_left, size: 20, color: Colors.black87),
-                    ),
-                    const SizedBox(width: 24),
-                    const Text(
-                      'Mei 2026',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                    GestureDetector(
+                      onTap: _previousMonth,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0xFFEEEEEE)),
+                        ),
+                        child: const Icon(Icons.chevron_left, size: 20, color: Colors.black87),
                       ),
                     ),
                     const SizedBox(width: 24),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
+                    SizedBox(
+                      width: 120,
+                      child: Text(
+                        _formatBulan(_selectedDate),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
                       ),
-                      child: const Icon(Icons.chevron_right, size: 20, color: Colors.black87),
+                    ),
+                    const SizedBox(width: 24),
+                    GestureDetector(
+                      onTap: _nextMonth,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0xFFEEEEEE)),
+                        ),
+                        child: const Icon(Icons.chevron_right, size: 20, color: Colors.black87),
+                      ),
                     ),
                   ],
                 ),
@@ -296,7 +328,7 @@ class _HistoriBookingBulananScreenState extends State<HistoriBookingBulananScree
                           builder: (context) => ExportReportModal(
                             activeFilter: _activeStatus,
                             isHarian: false,
-                            periodText: 'Mei 2026',
+                            periodText: _formatBulan(_selectedDate),
                           ),
                         );
                       },

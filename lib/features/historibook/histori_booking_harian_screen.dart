@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'histori_booking_bulanan_screen.dart';
-import 'widgets/export_report_modal.dart';
+import 'exsport/export_report_modal.dart';
 
 class HistoriBookingHarianScreen extends StatefulWidget {
   const HistoriBookingHarianScreen({super.key});
@@ -10,6 +10,8 @@ class HistoriBookingHarianScreen extends StatefulWidget {
 }
 
 class _HistoriBookingHarianScreenState extends State<HistoriBookingHarianScreen> {
+  DateTime _selectedDate = DateTime(2026, 5, 23);
+
   final List<String> _statusFilters = [
     'Semua',
     'Confirmed',
@@ -18,6 +20,32 @@ class _HistoriBookingHarianScreenState extends State<HistoriBookingHarianScreen>
     'Dibatalkan'
   ];
   String _activeStatus = 'Semua';
+
+  String _formatHarian(DateTime date) {
+    final days = [
+      'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
+    ];
+    final months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    // In Dart DateTime.weekday: 1 = Monday, 7 = Sunday
+    String dayName = days[date.weekday - 1];
+    String monthName = months[date.month - 1];
+    return "$dayName, ${date.day} $monthName ${date.year}";
+  }
+
+  void _previousDay() {
+    setState(() {
+      _selectedDate = _selectedDate.subtract(const Duration(days: 1));
+    });
+  }
+
+  void _nextDay() {
+    setState(() {
+      _selectedDate = _selectedDate.add(const Duration(days: 1));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,33 +169,43 @@ class _HistoriBookingHarianScreenState extends State<HistoriBookingHarianScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
-                      ),
-                      child: const Icon(Icons.chevron_left, size: 20, color: Colors.black87),
-                    ),
-                    const SizedBox(width: 24),
-                    const Text(
-                      '28 Mei 2026',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                    GestureDetector(
+                      onTap: _previousDay,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0xFFEEEEEE)),
+                        ),
+                        child: const Icon(Icons.chevron_left, size: 20, color: Colors.black87),
                       ),
                     ),
                     const SizedBox(width: 24),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFEEEEEE)),
+                    SizedBox(
+                      width: 180,
+                      child: Text(
+                        _formatHarian(_selectedDate),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
                       ),
-                      child: const Icon(Icons.chevron_right, size: 20, color: Colors.black87),
+                    ),
+                    const SizedBox(width: 24),
+                    GestureDetector(
+                      onTap: _nextDay,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0xFFEEEEEE)),
+                        ),
+                        child: const Icon(Icons.chevron_right, size: 20, color: Colors.black87),
+                      ),
                     ),
                   ],
                 ),
@@ -296,7 +334,7 @@ class _HistoriBookingHarianScreenState extends State<HistoriBookingHarianScreen>
                           builder: (context) => ExportReportModal(
                             activeFilter: _activeStatus,
                             isHarian: true,
-                            periodText: '28 Mei 2026',
+                            periodText: _formatHarian(_selectedDate),
                           ),
                         );
                       },

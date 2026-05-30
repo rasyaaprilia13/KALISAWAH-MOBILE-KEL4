@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../profile/profile_screen.dart';
 import '../keuangan/laporan_keuangan_screen.dart';
 import '../historibook/histori_booking_screen.dart';
+import '../inventaris/inventaris_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -14,82 +15,72 @@ class DashboardScreen extends StatelessWidget {
     bool small = false,
   }) {
     return Container(
-      padding: const EdgeInsets.all(14),
-
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffF8F5E9),
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFFF4F0DF),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xffDDD7B8),
+          color: const Color(0xFFE5E1D0),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.08),
-            blurRadius: 8,
+            color: const Color(0xFFD9ECFF).withOpacity(0.3),
+            blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Container(
             padding: const EdgeInsets.all(10),
-
             decoration: const BoxDecoration(
-              color: Color(0xffCFF4A9),
+              color: Color(0xFFCFF4A9),
               shape: BoxShape.circle,
             ),
-
             child: Icon(
               icon,
               color: Colors.black,
-              size: small ? 18 : 20,
+              size: small ? 18 : 22,
             ),
           ),
-
-          SizedBox(height: small ? 10 : 14),
-
+          const SizedBox(height: 12),
           Text(
             title,
             style: TextStyle(
-              fontSize: small ? 12 : 13,
-              color: Colors.black54,
+              fontSize: small ? 11 : 12,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
             ),
           ),
-
           const Spacer(),
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-
               Expanded(
                 child: Text(
                   value,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-
                   style: TextStyle(
-                    fontSize: small ? 16 : 15,
+                    fontSize: small ? 16 : 18,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
-
               if (suffix != null)
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 4,
                     bottom: 2,
                   ),
-
                   child: Text(
                     suffix,
                     style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                       color: Colors.black54,
                     ),
                   ),
@@ -111,115 +102,100 @@ class DashboardScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(14),
-
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xffDDEAF7),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: const Color(0xFFEEEEEE),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFD9ECFF).withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            )
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          )
-        ],
-      ),
-
-      child: Row(
-        children: [
-
-          Container(
-            padding: const EdgeInsets.all(12),
-
-            decoration: BoxDecoration(
-              color: const Color(0xffD9ECFF),
-              borderRadius: BorderRadius.circular(12),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFD9ECFF),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: Colors.black,
+                size: 24,
+              ),
             ),
-
-            child: Icon(
-              icon,
-              color: Colors.black,
-              size: 22,
-            ),
-          ),
-
-          const SizedBox(width: 14),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 11,
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-          const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 18,
-          ),
-       ],
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: Colors.black54,
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 18,
+            horizontal: 24,
+            vertical: 20,
           ),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Image.asset(
                     'assets/logo.png',
-                    width: 95,
+                    width: 80,
                     fit: BoxFit.contain,
                   ),
-
                   Row(
                     children: [
-
                       const Icon(
                         Icons.notifications_none_outlined,
-                        size: 22,
+                        size: 24,
+                        color: Colors.black,
                       ),
-
-                      const SizedBox(width: 12),
-
+                      const SizedBox(width: 16),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -231,85 +207,86 @@ class DashboardScreen extends StatelessWidget {
                         },
                         child: const Icon(
                           Icons.person_outline,
-                          size: 22,
+                          size: 24,
+                          color: Colors.black,
                         ),
                       ),
                     ],
                   )
                 ],
               ),
-
-              const SizedBox(height: 18),
-
+              const SizedBox(height: 24),
               const Text(
                 'HALO, RASYA APRILIA',
                 style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-
-              const SizedBox(height: 4),
-
+              const SizedBox(height: 6),
               const Text(
                 'Selamat datang di dashboard monitoring Kalisawah Smart Tourism',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 11,
+                  fontSize: 12,
                 ),
               ),
+              const SizedBox(height: 32),
 
-              const SizedBox(height: 30),
-
+              // Ringkasan Hari ini Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   const Text(
                     'Ringkasan Hari ini',
                     style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-
-                  Row(
-                    children: [
-
-                      const Text(
-                        '17 Mei 2026',
-                        style: TextStyle(
-                          fontSize: 11,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          '17 Mei 2026',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.calendar_today_outlined,
+                          size: 14,
                           color: Colors.black54,
                         ),
-                      ),
-
-                      const SizedBox(width: 6),
-
-                      const Icon(
-                        Icons.calendar_today_outlined,
-                        size: 15,
-                      ),
-
-                      const SizedBox(width: 4),
-
-                      const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 18,
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 16,
+                          color: Colors.black54,
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
+              const SizedBox(height: 20),
 
-              const SizedBox(height: 18),
-
+              // Statistic Cards
               Row(
                 children: [
-
                   Expanded(
                     child: SizedBox(
-                      height: 145,
+                      height: 160,
                       child: infoCard(
                         icon: Icons.payments_outlined,
                         title: 'Pemasukan Hari Ini',
@@ -317,12 +294,10 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  const SizedBox(width: 14),
-
+                  const SizedBox(width: 16),
                   Expanded(
                     child: SizedBox(
-                      height: 145,
+                      height: 160,
                       child: infoCard(
                         icon: Icons.people_alt_outlined,
                         title: 'Pengunjung Hari Ini',
@@ -333,16 +308,13 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
-              const SizedBox(height: 14),
-
+              const SizedBox(height: 16),
               Row(
                 children: [
-
                   Expanded(
                     flex: 2,
                     child: SizedBox(
-                      height: 145,
+                      height: 160,
                       child: infoCard(
                         icon: Icons.account_balance_wallet_outlined,
                         title: 'Pengeluaran Hari Ini',
@@ -350,12 +322,10 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  const SizedBox(width: 14),
-
+                  const SizedBox(width: 16),
                   Expanded(
                     child: SizedBox(
-                      height: 145,
+                      height: 160,
                       child: infoCard(
                         icon: Icons.calendar_month_outlined,
                         title: 'Booking\nHari Ini',
@@ -364,12 +334,10 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  const SizedBox(width: 14),
-
+                  const SizedBox(width: 16),
                   Expanded(
                     child: SizedBox(
-                      height: 145,
+                      height: 160,
                       child: infoCard(
                         icon: Icons.inventory_2_outlined,
                         title: 'Inventaris\nKondisi Normal',
@@ -380,24 +348,22 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 32),
 
-              const SizedBox(height: 34),
-
+              // Menu Utama Section
               const Text(
                 'Menu Utama',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-
-              const SizedBox(height: 18),
-
+              const SizedBox(height: 20),
               menuItem(
                 icon: Icons.file_download_outlined,
                 title: 'Laporan Keuangan',
-                subtitle:
-                    'Lihat pemasukan, pengeluaran, dan riwayat transaksi',
+                subtitle: 'Lihat pemasukan, pengeluaran, dan riwayat transaksi',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -407,19 +373,24 @@ class DashboardScreen extends StatelessWidget {
                   );
                 },
               ),
-
               menuItem(
-                icon: Icons.groups_outlined,
+                icon: Icons.analytics_outlined,
                 title: 'Analitik Pengunjung',
                 subtitle: 'Lihat data dan statistik pengunjung',
               ),
-
               menuItem(
                 icon: Icons.inventory_2_outlined,
                 title: 'Inventaris',
                 subtitle: 'Pantau stok dan kondisi inventaris',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const InventarisScreen(),
+                    ),
+                  );
+                },
               ),
-
               menuItem(
                 icon: Icons.list_alt_outlined,
                 title: 'Histori Booking',
@@ -433,18 +404,19 @@ class DashboardScreen extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 40),
 
-              const SizedBox(height: 30),
-
+              // Footer
               const Center(
                 child: Text(
                   '© Kalisawah Smart Tourism',
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 11,
+                    fontSize: 12,
                   ),
                 ),
-              )
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
