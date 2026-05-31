@@ -1,4 +1,4 @@
-import 'dart:convert'; // Untuk convert JSON <-> Dart object
+import 'dart:convert'; 
 import 'package:flutter/material.dart'; // Untuk ChangeNotifier
 import 'package:shared_preferences/shared_preferences.dart'; // Menyimpan data login di HP
 import 'package:http/http.dart' as http; // Untuk request API

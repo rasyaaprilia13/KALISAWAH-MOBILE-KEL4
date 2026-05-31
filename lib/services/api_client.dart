@@ -68,9 +68,8 @@ class ApiClient {
     return response;
   }
 
-  /// =========================
+  
   /// DELETE REQUEST
-  /// =========================
   static Future<http.Response> delete(
     String endpoint,
   ) async {
