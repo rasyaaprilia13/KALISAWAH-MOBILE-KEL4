@@ -3,6 +3,7 @@ import '../profile/profile_screen.dart';
 import '../keuangan/laporan_keuangan_screen.dart';
 import '../historibook/histori_booking_screen.dart';
 import '../inventaris/inventaris_screen.dart';
+import '../analitik_pengunjung/analitik_pengunjung_page.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -431,6 +432,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 icon: Icons.analytics_outlined,
                 title: 'Analitik Pengunjung',
                 subtitle: 'Lihat data dan statistik pengunjung',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AnalitikPengunjungPage(),
+                    ),
+                  );
+                },
               ),
               menuItem(
                 icon: Icons.inventory_2_outlined,

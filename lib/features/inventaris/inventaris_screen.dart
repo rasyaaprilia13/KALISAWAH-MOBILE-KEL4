@@ -132,162 +132,187 @@ class _InventarisScreenState extends State<InventarisScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
+        String? errorMessage;
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            void validateAndSave() {
+              setModalState(() => errorMessage = null);
+
+              if (nameController.text.trim().isEmpty) {
+                setModalState(() => errorMessage = 'Nama Inventaris wajib diisi');
+                return;
+              }
+              if (totalController.text.trim().isEmpty) {
+                setModalState(() => errorMessage = 'Jumlah Unit wajib diisi');
+                return;
+              }
+
+              final total = int.tryParse(totalController.text) ?? 0;
+              final perbaikan = int.tryParse(perbaikanController.text) ?? 0;
+              final rusak = int.tryParse(rusakController.text) ?? 0;
+              final siap = total - perbaikan - rusak;
+
+              if (siap < 0) {
+                setModalState(() => errorMessage = 'Jumlah unit tidak valid (Siap < 0)');
+                return;
+              }
+
+              final now = DateTime.now();
+              final months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+              ];
+              final dateStr = "${now.day} ${months[now.month - 1]} ${now.year}";
+
+              setState(() {
+                _allInventory.insert(
+                  0,
+                  InventoryItem(
+                    name: nameController.text.trim(),
+                    category: categoryController.text.trim().isEmpty ? 'Umum' : categoryController.text.trim(),
+                    lastUpdate: dateStr,
+                    total: total,
+                    siap: siap,
+                    perbaikan: perbaikan,
+                    rusak: rusak,
+                    keterangan: keteranganController.text.trim(),
                   ),
-                ),
-                const SizedBox(height: 24),
-                const Text(
-                  'Tambah Inventaris Baru',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                _buildFieldLabel('Nama Inventaris *'),
-                _buildTextField(nameController, 'Masukkan nama inventaris'),
-                const SizedBox(height: 16),
-                _buildFieldLabel('Kategori'),
-                _buildTextField(categoryController, 'Contoh: Camp, Rafting, Outbound, dll'),
-                const SizedBox(height: 16),
-                Row(
+                );
+              });
+
+              Navigator.pop(context);
+            }
+
+            return Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildFieldLabel('Jumlah Unit *'),
-                          _buildTextField(totalController, 'Contoh: 10', isNumeric: true),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildFieldLabel('Perlu Perbaikan'),
-                          _buildTextField(perbaikanController, '0', isNumeric: true),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                _buildFieldLabel('Rusak'),
-                _buildTextField(rusakController, '0', isNumeric: true),
-                const SizedBox(height: 16),
-                _buildFieldLabel('Keterangan'),
-                _buildTextField(keteranganController, 'Tambahkan keterangan inventaris', maxLines: 3),
-                const SizedBox(height: 32),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: const BorderSide(color: Colors.grey),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(2),
                         ),
-                        child: const Text('Batal', style: TextStyle(color: Colors.black54)),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      flex: 2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (nameController.text.isEmpty) {
-                            _showErrorSnackbar('Nama Inventaris wajib diisi');
-                            return;
-                          }
-                          if (totalController.text.isEmpty) {
-                            _showErrorSnackbar('Jumlah Unit wajib diisi');
-                            return;
-                          }
-
-                          final total = int.tryParse(totalController.text) ?? 0;
-                          final perbaikan = int.tryParse(perbaikanController.text) ?? 0;
-                          final rusak = int.tryParse(rusakController.text) ?? 0;
-                          final siap = total - perbaikan - rusak;
-
-                          if (siap < 0) {
-                            _showErrorSnackbar('Jumlah unit tidak valid (Siap < 0)');
-                            return;
-                          }
-
-                          final now = DateTime.now();
-                          final months = [
-                            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                          ];
-                          final dateStr = "${now.day} ${months[now.month - 1]} ${now.year}";
-
-                          setState(() {
-                            _allInventory.insert(
-                              0,
-                              InventoryItem(
-                                name: nameController.text,
-                                category: categoryController.text.isEmpty ? 'Umum' : categoryController.text,
-                                lastUpdate: dateStr,
-                                total: total,
-                                siap: siap,
-                                perbaikan: perbaikan,
-                                rusak: rusak,
-                                keterangan: keteranganController.text,
+                    const SizedBox(height: 24),
+                    
+                    // Error Message Display
+                    if (errorMessage != null) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.red[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.red.withOpacity(0.3)),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                errorMessage!,
+                                style: const TextStyle(color: Colors.red, fontSize: 13, fontWeight: FontWeight.w500),
                               ),
-                            );
-                          });
-
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4CAF50),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          elevation: 0,
+                            ),
+                          ],
                         ),
-                        child: const Text('Simpan Inventaris', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
+                      const SizedBox(height: 16),
+                    ],
+
+                    const Text(
+                      'Tambah Inventaris Baru',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(height: 20),
+                    _buildFieldLabel('Nama Inventaris *'),
+                    _buildTextField(nameController, 'Masukkan nama inventaris'),
+                    const SizedBox(height: 16),
+                    _buildFieldLabel('Kategori'),
+                    _buildTextField(categoryController, 'Contoh: Camp, Rafting, Outbound, dll'),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildFieldLabel('Jumlah Unit *'),
+                              _buildTextField(totalController, 'Contoh: 10', isNumeric: true),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildFieldLabel('Perlu Perbaikan'),
+                              _buildTextField(perbaikanController, '0', isNumeric: true),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFieldLabel('Rusak'),
+                    _buildTextField(rusakController, '0', isNumeric: true),
+                    const SizedBox(height: 16),
+                    _buildFieldLabel('Keterangan'),
+                    _buildTextField(keteranganController, 'Tambahkan keterangan inventaris', maxLines: 3),
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              side: const BorderSide(color: Colors.grey),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                            child: const Text('Batal', style: TextStyle(color: Colors.black54)),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: validateAndSave,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF4CAF50),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              elevation: 0,
+                            ),
+                            child: const Text('Simpan Inventaris', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
                   ],
                 ),
-                const SizedBox(height: 12),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
-    );
-  }
-
-  void _showErrorSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.redAccent,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
     );
   }
 
