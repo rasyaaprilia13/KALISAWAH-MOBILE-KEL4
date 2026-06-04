@@ -150,10 +150,10 @@ class _ExportReportModalState extends State<ExportReportModal> {
 
                   const SizedBox(height: 32),
 
-                  // Section: Pilih Periode
-                  const Text(
-                    'Periode Laporan',
-                    style: TextStyle(
+                  // Section: Tampilkan Periode (Read-only)
+                  Text(
+                    widget.isHarian ? 'Tanggal Laporan' : 'Periode Laporan',
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
@@ -161,36 +161,28 @@ class _ExportReportModalState extends State<ExportReportModal> {
                   ),
                   const SizedBox(height: 12),
                   Container(
-                    height: 52,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color(0xFFF9F9F9),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFEEEEEE)),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.calendar_today_outlined, size: 20, color: Colors.black54),
+                        const Icon(Icons.calendar_today_outlined, size: 20, color: Color(0xFF81C784)),
                         const SizedBox(width: 12),
-                        Text(
-                          '${widget.isHarian ? 'Harian' : 'Bulanan'} - ${widget.periodText}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Text(
+                            widget.periodText,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                        const Spacer(),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
                       ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Laporan akan dibuat berdasarkan periode yang dipilih.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.black38,
                     ),
                   ),
 

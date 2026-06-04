@@ -67,7 +67,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     bool small = false,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFFF4F0DF),
         borderRadius: BorderRadius.circular(18),
@@ -87,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
               color: Color(0xFFCFF4A9),
               shape: BoxShape.circle,
@@ -95,19 +95,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Icon(
               icon,
               color: Colors.black,
-              size: small ? 18 : 22,
+              size: small ? 16 : 20,
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: small ? 11 : 12,
-              color: Colors.black87,
-              fontWeight: FontWeight.w500,
+          const SizedBox(height: 8),
+          Flexible(
+            child: Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: small ? 11 : 12,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 4),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -117,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: small ? 16 : 18,
+                    fontSize: small ? 15 : 17,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -132,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Text(
                     suffix,
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       color: Colors.black54,
                     ),
                   ),
@@ -395,7 +399,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       height: 160,
                       child: infoCard(
                         icon: Icons.inventory_2_outlined,
-                        title: 'Inventaris\nKondisi Normal',
+                        title: 'Inventaris',
                         value: '50',
                         small: true,
                       ),

@@ -160,7 +160,7 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
       crossAxisCount: 2,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
-      childAspectRatio: 1.1,
+      childAspectRatio: 0.85,
       children: [
         _buildStatCard(
           icon: Icons.group,
@@ -168,6 +168,7 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
           title: 'Total Pengunjung',
           value: _totalPengunjung,
           growth: _growthTotal,
+          subtitle: 'vs Bulan lalu',
           isPositive: true,
         ),
         _buildStatCard(
@@ -175,7 +176,8 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
           iconColor: Colors.blue,
           title: 'Booking Terbanyak',
           value: _bookingTerbanyak,
-          subtitle: 'Paket Wisata',
+          growth: '+5,2%',
+          subtitle: 'Tren meningkat',
           showTrend: true,
         ),
         _buildStatCard(
@@ -184,6 +186,7 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
           title: 'Pengunjung Baru',
           value: _pengunjungBaru,
           growth: _growthBaru,
+          subtitle: 'vs Bulan lalu',
           isPositive: true,
         ),
         _buildStatCard(
@@ -191,8 +194,8 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
           iconColor: Colors.orange,
           title: 'Total Pendapatan',
           value: _totalPendapatan,
-          subtitle: 'Total Pendapatan',
           growth: _growthPendapatan,
+          subtitle: 'Target tercapai',
           isPositive: true,
         ),
       ],
@@ -204,8 +207,8 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
     required Color iconColor,
     required String title,
     required String value,
-    String? growth,
-    String? subtitle,
+    required String growth,
+    required String subtitle,
     bool isPositive = true,
     bool showTrend = false,
   }) {
@@ -213,89 +216,83 @@ class _AnalitikPengunjungPageState extends State<AnalitikPengunjungPage> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: iconColor, size: 20),
-              ),
-              if (showTrend)
-                const Icon(Icons.trending_up, color: Colors.blue, size: 16),
-            ],
+          // 1. Icon
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: iconColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: iconColor, size: 22),
           ),
-          const SizedBox(height: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+          const Spacer(),
+          // 2. Title
+          Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          // 3. Main Value
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.black,
               ),
-              const SizedBox(height: 4),
-              FittedBox(
-                child: Text(
-                  value,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 8),
-          if (growth != null)
-            Row(
-              children: [
-                Icon(
-                  isPositive ? Icons.arrow_upward : Icons.arrow_downward,
-                  color: const Color(0xFF22C55E),
-                  size: 12,
+          // 4. Percentage Growth
+          Row(
+            children: [
+              Icon(
+                isPositive ? Icons.arrow_upward : Icons.arrow_downward,
+                color: const Color(0xFF22C55E),
+                size: 14,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                growth,
+                style: const TextStyle(
+                  color: Color(0xFF22C55E),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  growth,
-                  style: const TextStyle(
-                    color: Color(0xFF22C55E),
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                if (subtitle == null)
-                  Text(
-                    ' dari bln lalu',
-                    style: TextStyle(color: Colors.grey[400], fontSize: 10),
-                  ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 2),
+          // 5. Additional Info
+          Text(
+            subtitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 11,
             ),
-          if (subtitle != null && growth == null)
-            Text(
-              subtitle,
-              style: TextStyle(color: Colors.grey[400], fontSize: 11),
-            ),
-          if (subtitle != null && growth != null)
-             Text(
-              subtitle,
-              style: TextStyle(color: Colors.grey[400], fontSize: 10),
-            ),
+          ),
         ],
       ),
     );

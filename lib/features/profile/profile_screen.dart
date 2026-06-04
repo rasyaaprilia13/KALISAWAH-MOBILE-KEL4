@@ -3,6 +3,9 @@ import 'profile_edit.dart';
 import '../keuangan/laporan_keuangan_screen.dart';
 import '../historibook/histori_booking_screen.dart';
 import '../inventaris/inventaris_screen.dart';
+import '../analitik_pengunjung/analitik_pengunjung_page.dart';
+import '../login/login_screen.dart';
+import '../bantuan/bantuan_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -162,15 +165,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16),
                       
                       _buildMenuCard(
-                        title: 'Informasi Akun',
-                        onTap: () {},
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      _buildMenuCard(
                         title: 'Bantuan',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BantuanScreen(),
+                            ),
+                          );
+                        },
                       ),
                       
                       const SizedBox(height: 32),
@@ -180,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: 'Logout',
                         textColor: const Color(0xFFE57373), // Merah soft
                         showArrow: false,
-                        onTap: () {},
+                        onTap: () => _showLogoutConfirmation(context),
                       ),
                     ],
                   ),
@@ -233,9 +236,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDropdownItem('Keuangan'),
+              _buildDropdownItem('Laporan Keuangan'),
               _buildDivider(),
-              _buildDropdownItem('Data pengunjung'),
+              _buildDropdownItem('Analitik Pengunjung'),
               _buildDivider(),
               _buildDropdownItem('Inventaris'),
               _buildDivider(),
@@ -253,11 +256,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           _isMonitoringMenuOpen = false;
         });
-        if (text == 'Keuangan') {
+        if (text == 'Laporan Keuangan') {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const LaporanKeuanganScreen(),
+            ),
+          );
+        } else if (text == 'Analitik Pengunjung') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AnalitikPengunjungPage(),
             ),
           );
         } else if (text == 'Histori booking') {
@@ -352,6 +362,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Text(
+            'Logout Akun',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text('Apakah Anda yakin ingin keluar dari akun ini?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'Batal',
+                style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                // Hapus riwayat navigasi dan pindah ke Login
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Color(0xFFE57373), fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

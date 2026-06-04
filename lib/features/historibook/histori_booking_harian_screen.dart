@@ -438,37 +438,36 @@ class _HistoriBookingHarianScreenState extends State<HistoriBookingHarianScreen>
               
               const SizedBox(height: 32),
               
-              // Section Paket Paling Diminati
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  'Paket Paling Diminati',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+              // Section Paket Paling Diminati (Only show when status filter is 'Semua')
+              if (_activeStatus == 'Semua') ...[
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    'Paket Paling Diminati',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
-              ),
-              
-              const SizedBox(height: 16),
-              
-              SizedBox(
-                height: 120,
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildPaketCard('Camping Family', '1'),
-                    const SizedBox(width: 12),
-                    _buildPaketCard('Rafting', '2'),
-                    const SizedBox(width: 12),
-                    _buildPaketCard('Outbond Asik', '3'),
-                  ],
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 120,
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildPaketCard('Camping Family', '1'),
+                      const SizedBox(width: 12),
+                      _buildPaketCard('Rafting', '2'),
+                      const SizedBox(width: 12),
+                      _buildPaketCard('Outbond Asik', '3'),
+                    ],
+                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
+              ],
             ],
           ),
         ),
