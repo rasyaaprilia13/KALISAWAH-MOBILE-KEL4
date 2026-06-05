@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import '../dashboard/dashboard_screen.dart';
+import '../historibook/histori_booking_screen.dart';
+import '../analitik_pengunjung/analitik_pengunjung_page.dart';
+import '../inventaris/inventaris_screen.dart';
+import '../keuangan/laporan_keuangan_screen.dart';
+import '../profile/profile_screen.dart';
 
 class BantuanScreen extends StatelessWidget {
   const BantuanScreen({super.key});
@@ -74,31 +80,37 @@ class BantuanScreen extends StatelessWidget {
               icon: Icons.dashboard_outlined,
               title: 'Dashboard',
               description: 'Menampilkan ringkasan pemasukan, pengeluaran, pengunjung, booking, dan inventaris.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen())),
             ),
             _buildGuideCard(
               icon: Icons.history_outlined,
               title: 'History Booking',
               description: 'Melihat data booking pengunjung, melakukan pencarian, filter status booking, dan ekspor laporan.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoriBookingScreen())),
             ),
             _buildGuideCard(
               icon: Icons.analytics_outlined,
               title: 'Analitik Pengunjung',
               description: 'Menampilkan statistik pengunjung berdasarkan bulan yang dipilih.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AnalitikPengunjungPage())),
             ),
             _buildGuideCard(
               icon: Icons.inventory_2_outlined,
               title: 'Inventaris',
               description: 'Mengelola data inventaris wisata.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const InventarisScreen())),
             ),
             _buildGuideCard(
               icon: Icons.account_balance_wallet_outlined,
               title: 'Laporan Keuangan',
               description: 'Melihat pemasukan, pengeluaran, dan ekspor laporan keuangan.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LaporanKeuanganScreen())),
             ),
             _buildGuideCard(
               icon: Icons.person_outline,
               title: 'Profile',
               description: 'Mengakses bantuan dan logout aplikasi.',
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen())),
             ),
             
             const SizedBox(height: 16),
@@ -163,11 +175,15 @@ class BantuanScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGuideCard({required IconData icon, required String title, required String description}) {
+  Widget _buildGuideCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required VoidCallback onTap,
+  }) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -179,43 +195,54 @@ class BantuanScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFB7E8A5).withOpacity(0.15),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: const Color(0xFF2E7D32), size: 20),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFB7E8A5).withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(icon, color: const Color(0xFF2E7D32), size: 20),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        description,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.black54,
-                    height: 1.4,
-                  ),
-                ),
+                const Icon(Icons.chevron_right, color: Colors.black26, size: 20),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
