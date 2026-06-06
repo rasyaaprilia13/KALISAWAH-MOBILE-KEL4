@@ -15,25 +15,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _loginError;
 
   void _handleLogin() {
-    // Reset error saat mencoba login ulang
+    // Reset error login saat mencoba login ulang
     setState(() {
       _loginError = null;
     });
 
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-
-    // Validasi sederhana (Frontend Only)
-    if (email.isEmpty || password.isEmpty) {
-      setState(() {
-        _loginError = "Email dan password tidak boleh kosong";
-      });
-    } else {
-      // Login sukses (Simulasi: Semua input diperbolehkan)
-      setState(() {
-        _loginError = null;
-      });
-      
+    if (_formKey.currentState!.validate()) {
+      // Login sukses (Simulasi: Semua input diperbolehkan jika valid)
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -88,17 +76,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onChanged: (value) {
-                      // Hapus error saat user mengetik ulang
-                      if (_loginError != null) {
-                        setState(() {
-                          _loginError = null;
-                        });
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email wajib diisi';
                       }
+                      final emailRegex = RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                      if (!emailRegex.hasMatch(value)) {
+                        return 'Masukkan email yang valid';
+                      }
+                      return null;
                     },
                   ),
 
-                  // Error Login (Tampil jika field kosong)
+                  // Error Login (Jika ada error dari proses login)
                   if (_loginError != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, left: 4.0),
@@ -127,13 +118,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onChanged: (value) {
-                      // Hapus error saat user mengetik ulang
-                      if (_loginError != null) {
-                        setState(() {
-                          _loginError = null;
-                        });
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Password wajib diisi';
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 24),
