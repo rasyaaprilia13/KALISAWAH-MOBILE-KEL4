@@ -22,7 +22,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       if (pickedFile != null) {
         final File file = File(pickedFile.path);
         
-        // Validasi Ekstensi File
+        // Validasi tipe file
         final String extension = pickedFile.name.split('.').last.toLowerCase();
         final List<String> allowedExtensions = ['jpg', 'jpeg', 'png'];
         
